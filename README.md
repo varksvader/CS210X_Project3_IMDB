@@ -1,21 +1,30 @@
 # CS210X_Project3_IMDB
 # Ideas for Starting
-/** Whitehill's ideas **/
+/*Whitehill's ideas */
 // Use scanner getLine()
+
 // ^^ if line contains the actor, keep the line
+
 // ^^ skip everything else, search for specific things
+
 // array of actor/movie (year) pairs --> let graph do stuff then
+
 // main goal: get the movie and the year
+
 // Use adjacency list
 
-/** Varnika's ideas **/
+/* Varnika's ideas */
 // Create a node for each actor, contains a list of all movies (and years) acted in
+
 // Create a node for each movies (and years), contains a list of all actors in it
+
 // In order to create a graph, for an edge: 
+
 // ^^ one vertex needs to be an actor node and other vertex needs to be a movie node
+
 // ^^ These vertices need to be within each other's lists
-// Start with the actor node build all possible paths up to 2 nodes ahead, and scan
-// the nodes for the other actor (bread-first search).
+
+// Start with the actor node build all possible paths up to 2 nodes ahead, and scan the nodes for the other actor (bread-first search).
 
 # Introduction
 In this project you will develop software instructure to model large graphs along with a search engine to find shortest paths between any pair of nodes in a graph. As an example application illustrating how to use this infrastructure, you will develop a search engine for the Internet Movie Database (IMDB) that allows users to find a shortest path of actor nodes and movie nodes that connect any two specified actors (if such a path exists). The code that your team will write to load data and find paths will interface with code that implements the graphical user interface of the application.
