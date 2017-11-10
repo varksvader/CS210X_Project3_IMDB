@@ -53,14 +53,21 @@ public class IMDBActorsGraph implements Graph {
                 continue;
             }
 
-            String name = line.substring(0, line.indexOf("\t"));
+
+
+            final String name = line.substring(0, line.indexOf("\t"));
+
+            if (line.contains("(TV)") || line.contains("\"")) {
+                continue;
+            }
+
             final List<String> movies = new ArrayList<>();
-            String firstMovie = line.substring(line.indexOf("\t") + 1, line.indexOf(")") + 1);
+            final String firstMovie = line.substring(line.indexOf("\t") + 1, line.indexOf(")") + 1);
             movies.add(firstMovie);
 
             while (!actorsScanner.nextLine().equals("")) {
                 line = actorsScanner.nextLine();
-                String movie = line.substring(0, line.indexOf(")") + 1);
+                final String movie = line.substring(0, line.indexOf(")") + 1);
                 movies.add(movie);
             }
 
