@@ -42,10 +42,9 @@ public class IMDBActorsGraph implements Graph {
         Boolean copyrightInfoDone = false;
 
         while (actorsScanner.hasNextLine()) {
-
             String line = actorsScanner.nextLine();
 
-            // Skips the first few hundred line with the copyright information
+            // Skips the first few hundred lines with the copyright information
             if (!copyrightInfoDone) {
                 if (line.equals("----			------")) {
                     copyrightInfoDone = true;
@@ -53,9 +52,9 @@ public class IMDBActorsGraph implements Graph {
                 continue;
             }
 
-            String name = line.substring(0, line.indexOf("\t"));
+            final String name = line.substring(0, line.indexOf("\t"));
             final List<String> movies = new ArrayList<>();
-            String firstMovie = line.substring(line.indexOf("\t") + 1, line.indexOf(")") + 1);
+            final String firstMovie = line.substring(line.indexOf("\t") + 1, line.indexOf(")") + 1);
             movies.add(firstMovie);
 
             while (!actorsScanner.nextLine().equals("")) {
