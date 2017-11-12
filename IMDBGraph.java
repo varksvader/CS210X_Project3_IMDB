@@ -1,6 +1,9 @@
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Scanner;
 
-public class IMDBGraph {
+public abstract class IMDBGraph {
 
     static class ActorNode implements Node {
 
