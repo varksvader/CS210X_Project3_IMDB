@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class IMDBMoviesGraph extends IMDBGraph implements Graph {
 
     public IMDBMoviesGraph(String actorsFilename, String actressesFilename) throws IOException {
-        
+
     }
 
 
