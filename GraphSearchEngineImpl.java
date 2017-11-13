@@ -1,7 +1,9 @@
+//Blank bfs search for testing
 import java.util.List;
 
 public class GraphSearchEngineImpl implements GraphSearchEngine {
 
+    //implied constructor
     public GraphSearchEngineImpl() {
 
     }
