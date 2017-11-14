@@ -1,42 +1,21 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class IMDBGraph {
 
-    private static class ActorNode implements Node {
-
-        private String name;
-        private Collection<? extends Node> neighbors;
-
-        public ActorNode(String name, Collection<? extends Node> neighbors) {
-            this.name = name;
-            this.neighbors = neighbors;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public Collection<? extends Node> getNeighbors() {
-            return neighbors;
-        }
-
-    }
-
-    private static class MovieNode implements Node {
+    static class ActorNode implements Node {
 
         private String name;
         private Collection<MovieNode> neighbors;
 
-        public MovieNode(String name, Collection<? extends Node> neighbors) {
+        public ActorNode(String name) {
             this.name = name;
-            this.neighbors = (Collection<MovieNode>) neighbors;
+            this.neighbors = new ArrayList<>();
+        }
+
+        public void addNeighbor(MovieNode m) {
+            neighbors.add(m);
         }
 
         @Override
@@ -45,30 +24,56 @@ public class IMDBGraph {
         }
 
         @Override
-        public Collection<? extends Node> getNeighbors() {
+        public Collection<MovieNode> getNeighbors() {
+            return neighbors;
+        }
+    }
+
+    static class MovieNode implements Node {
+
+        private String name;
+        private Collection<ActorNode> neighbors;
+
+        public MovieNode(String name) {
+            this.name = name;
+            this.neighbors = new ArrayList<>();
+        }
+
+        public void addNeighbor(ActorNode m) {
+            neighbors.add(m);
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public Collection<ActorNode> getNeighbors() {
             return neighbors;
         }
     }
 
 
     private Scanner actorsScanner, actressesScanner;
-    private List<ActorNode> actors;
-    private List<MovieNode> movies;
+    Map<String, ActorNode> actors;
+    Map<String, MovieNode> movies;
 
     public IMDBGraph(String actorsFilename, String actressesFilename) throws IOException {
         actorsScanner = new Scanner(new File(actorsFilename), "ISO-8859-1");
         actressesScanner = new Scanner(new File(actressesFilename), "ISO-8859-1");
-        actors = new ArrayList<ActorNode>();
-        movies = new ArrayList<MovieNode>();
+        actors = new LinkedHashMap<>();
+        movies = new LinkedHashMap<>();
         parseData(actorsScanner);
-        // parseData(actressesScanner);
+        parseData(actressesScanner);
     }
 
     private void parseData(Scanner scanner) {
-        final String tab = "    "; // 4 spaces
+        final String tab = "\t"; // 4 spaces
         Boolean copyrightInfoDone = false;
-        String name = "";
-        List<String> moviesForCurrActor = new ArrayList<>();
+        String name;
+        ActorNode newActor = null;
+        MovieNode newMovie;
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
@@ -77,54 +82,71 @@ public class IMDBGraph {
             if (!copyrightInfoDone) {
                 if (line.equals("----			------")) {
                     copyrightInfoDone = true;
-                    scanner.nextLine();
+                    // scanner.nextLine();
                 }
                 continue;
             }
 
+            if (line.equals("-----------------------------------------------------------------------------")) {
+                return;
+            }
+
             // If new actor on this line
             if (line.indexOf(tab) != 0 && !line.isEmpty()) {
-                moviesForCurrActor = new ArrayList<>();
-                name = line.substring(0, line.indexOf("     "));
+                name = line.substring(0, line.indexOf(tab));
+                newActor = new ActorNode(name);
+                actors.put(newActor.getName(), newActor);
 
                 if (line.contains("(TV)") || line.contains("\"")) {
                     continue;
                 }
 
-                final String firstMovie = line.substring(line.lastIndexOf("     ") + tab.length() + 1, line.indexOf(")") + 1);
-                moviesForCurrActor.add(firstMovie);
-//                final List actorsInMovie = new ArrayList();
-//                actorsInMovie.add(new ActorNode(name, null));
-//
-//                if (movies.contains(firstMovie))
-//                movies.add(new MovieNode(firstMovie, actorsInMovie));
+                final String firstMovie = line.substring(line.lastIndexOf(tab) + 1, line.lastIndexOf(")") + 1);
 
+                actors.get(newActor.getName()).addNeighbor(new MovieNode(firstMovie));
+                newMovie = new MovieNode(firstMovie);
+
+                // if the movie is already in the list
+                if (movies.containsKey(newMovie.getName())) {
+                    movies.get(newMovie.getName()).addNeighbor(newActor);
+                } else {
+                    newMovie.addNeighbor(newActor);
+                    movies.put(newMovie.getName(), newMovie);
+                }
             } else {
                 if (line.contains("(TV)") || line.contains("\"")) {
                     continue;
                 }
 
-                if (line.isEmpty()) {
-                    actors.add(new ActorNode(name, convertStringsToMovieNodes(moviesForCurrActor)));
-                } else {
+                if (!line.isEmpty()) {
                     final String movie = line.substring(tab.length() * 3, line.indexOf(")") + 1);
-                    moviesForCurrActor.add(movie);
+                    newMovie = new MovieNode(movie);
+
+                    // if the movie is already in the list
+                    if (movies.containsKey(newMovie.getName())) {
+                        movies.get(newMovie.getName()).addNeighbor(newActor);
+                    } else {
+                        newMovie.addNeighbor(newActor);
+                        movies.put(newMovie.getName(), newMovie);
+                    }
+
+                    actors.get(newActor.getName()).addNeighbor(newMovie);
                 }
             }
-            if (!scanner.hasNextLine()) {
-                actors.add(new ActorNode(name, convertStringsToMovieNodes(moviesForCurrActor)));
-            }
         }
+
+        removeActorsWithoutMovies();
     }
 
-    private Collection<MovieNode> convertStringsToMovieNodes(List<String> list) {
-        Collection<MovieNode> movieNodes = new ArrayList<>();
-
-        for (String s : list) {
-            movieNodes.add(new MovieNode(s, null));
+    private void removeActorsWithoutMovies() {
+        Iterator<String> iterator = actors.keySet().iterator();
+        while(iterator.hasNext()) {
+            String name = iterator.next();
+            ActorNode a = actors.get(name);
+            if (a.getNeighbors().isEmpty()) {
+                iterator.remove();
+            }
         }
-
-        return movieNodes;
     }
 
 }

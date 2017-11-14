@@ -1,27 +1,24 @@
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
-
-import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 
 public class IMDBActorsGraph extends IMDBGraph implements Graph {
 
+    private Map<String, ActorNode> listOfActors;
+
     public IMDBActorsGraph(String actorsFilename, String actressesFilename) throws IOException {
         super(actorsFilename, actressesFilename);
+        this.listOfActors = actors;
     }
 
-
-
+    @Override
     public Collection<? extends Node> getNodes() {
-        return actors;
+        return new ArrayList<>(actors.values());
     }
 
+    @Override
     public Node getNodeByName(String name) {
-        for (ActorNode n : actors) {
-            if (n.getName().equals(name)) {
-                return n;
-            }
-        }
-        return null;
+        return listOfActors.get(name);
     }
 }

@@ -1,24 +1,24 @@
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
 
 public class IMDBMoviesGraph extends IMDBGraph implements Graph {
 
+    private Map<String, MovieNode> listOfMovies;
+
     public IMDBMoviesGraph(String actorsFilename, String actressesFilename) throws IOException {
-
+        super(actorsFilename, actressesFilename);
+        this.listOfMovies = movies;
     }
-
 
     @Override
     public Collection<? extends Node> getNodes() {
-        return null;
+        return new ArrayList<>(movies.values());
     }
 
     @Override
     public Node getNodeByName(String name) {
-        return null;
+        return listOfMovies.get(name);
     }
 }
