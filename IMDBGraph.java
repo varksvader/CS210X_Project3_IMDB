@@ -43,6 +43,14 @@ public class IMDBGraph {
         public Collection<IMDBNode> getNeighbors() {
             return _neighbors;
         }
+	
+	/**
+         * Override original equals only to compare names of the node
+         */
+        @Override
+        public boolean equals(Object o) {
+    		return (((Node) o).getName().equals(_name));
+    	}
     }
 
     final static class ActorNode extends IMDBNode {
