@@ -151,7 +151,8 @@ public class IMDBGraph {
      * @return the movie title
      */
     private static String getMovieAtLine(String line) {
-        return line.substring(line.lastIndexOf("\t") + 1, line.indexOf(")") + 1);
+        System.out.println(line);
+        return line.substring(line.lastIndexOf("\t") + 1, line.lastIndexOf(")") + 1);
     }
 
     /**
