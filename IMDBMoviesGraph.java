@@ -11,7 +11,7 @@ public class IMDBMoviesGraph extends IMDBGraph implements Graph {
      * Constructor
      * @param actorsFilename the filename of the actors
      * @param actressesFilename the filename of the actresses
-     * @throws IOException
+     * @throws IOException if the file is not found
      */
     public IMDBMoviesGraph(String actorsFilename, String actressesFilename) throws IOException {
         super(actorsFilename, actressesFilename);
