@@ -5,12 +5,17 @@ import java.util.Map;
 
 public class IMDBActorsGraph extends IMDBGraph implements Graph {
 
-    final protected Map<String, ActorNode> _listOfActors;
+    final private Map<String, ActorNode> _listOfActors;
 
+    /**
+     * Constructor
+     * @param actorsFilename the filename of the actors
+     * @param actressesFilename the filename of the actresses
+     * @throws IOException
+     */
     public IMDBActorsGraph(String actorsFilename, String actressesFilename) throws IOException {
         super(actorsFilename, actressesFilename);
         _listOfActors = actors;
-        System.out.println(actors.size());
     }
 
     /**
