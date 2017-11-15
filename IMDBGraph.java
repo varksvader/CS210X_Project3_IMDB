@@ -126,7 +126,7 @@ public class IMDBGraph {
                 if (line.contains("(TV)") || line.contains("\"")) {
                     continue;
                 }
-                final String firstMovie = line.substring(line.lastIndexOf(tab) + 1, line.lastIndexOf(")") + 1);
+                final String firstMovie = getMovieAtLine(line);
                 newMovie = new MovieNode(firstMovie);
                 actors.get(newActor.getName()).addNeighbor(newMovie);
                 addMovies(newMovie, newActor);
@@ -135,7 +135,7 @@ public class IMDBGraph {
                     continue;
                 }
                 if (!line.isEmpty()) {
-                    final String movie = line.substring(tab.length() * 3, line.indexOf(")") + 1);
+                    final String movie = getMovieAtLine(line);
                     newMovie = new MovieNode(movie);
                     addMovies(newMovie, newActor);
                     actors.get(newActor.getName()).addNeighbor(newMovie);
@@ -143,6 +143,15 @@ public class IMDBGraph {
             }
         }
         checkIfActorHasMovies(newActor);
+    }
+
+    /**
+     * Extracts the movie title from the given line
+     * @param line The line of the data file
+     * @return the movie title
+     */
+    private static String getMovieAtLine(String line) {
+        return line.substring(line.lastIndexOf("\t") + 1, line.indexOf(")") + 1);
     }
 
     /**

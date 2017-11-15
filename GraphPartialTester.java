@@ -23,7 +23,7 @@ public class GraphPartialTester {
 		correct.add(actor1);
 		correct.add(moviesGraph.getNodeByName("Sierra Spirits (2009)"));
 		correct.add(actor2);
-		assertEquals(correct, shortestPath);  // there is no path between these people
+		assertEquals(correct, shortestPath);
 	}
 	
 	@Test(timeout = 5000)
@@ -47,11 +47,38 @@ public class GraphPartialTester {
 		final Node actor1 = actorsGraph.getNodeByName("A'Dair, Michelle");
 		final Node actor2 = actorsGraph.getNodeByName("A'Dair, Michelle");
 		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actor2);
-		final List<Node> correct = new ArrayList<Node>();
+		final List<Node> correct = new ArrayList<>();
 		correct.add(actor1);
-		assertEquals(correct, shortestPath); // there is no path between these people
-		
+		assertEquals(correct, shortestPath);
 	}
+
+	@Test(timeout = 5000)
+	/**
+	 * Verifies that there is a shortest path between a specific actor and
+	 * actress.
+	 */
+	public void findShortestPath4() {
+		final Node actor1 = actorsGraph.getNodeByName("Actor1");
+		final Node actor2 = actorsGraph.getNodeByName("Actor5");
+		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actor2);
+		final List<Node> correct = new ArrayList<>();
+		correct.add(actor1);
+		correct.add(moviesGraph.getNodeByName("Movie1 (2002)"));
+		correct.add(actorsGraph.getNodeByName("Actor4"));
+		correct.add(moviesGraph.getNodeByName("Movie4 (2002)"));
+		correct.add(actor2);
+		assertEquals(correct, shortestPath);
+	}
+
+	@Test
+	/**
+	 * Verifies that an actor that has only starred in TV shows in not present in the actors list
+	 */
+	public void testActorOnlyInTVShows() {
+		assertNull(actorsGraph.getNodeByName("$, Chaw"));
+	}
+
+
 
 	@Before
 	/**
