@@ -50,7 +50,7 @@ public class IMDBGraph {
          */
         @Override
         public boolean equals(Object o) {
-    		return (((Node) o).getName().equals(_name));
+    		return (((IMDBNode) o).getName().equals(_name));
     	}
     }
 
@@ -83,7 +83,7 @@ public class IMDBGraph {
      * Constructor
      * @param actorsFilename the filename of the actors
      * @param actressesFilename the filename of the actresses
-     * @throws IOException
+     * @throws IOException if the file is not found
      */
     public IMDBGraph(String actorsFilename, String actressesFilename) throws IOException {
         final Scanner actorsScanner = new Scanner(new File(actorsFilename), "ISO-8859-1");

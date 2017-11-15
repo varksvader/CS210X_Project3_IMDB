@@ -8,8 +8,8 @@ import java.io.*;
  * Code to test Project 3; you should definitely add more tests!
  */
 public class GraphPartialTester {
-	Graph actorsGraph, moviesGraph;
-	GraphSearchEngine searchEngine;
+	private Graph actorsGraph, moviesGraph;
+	private GraphSearchEngine searchEngine;
 
 	@Test(timeout=5000)
 	/**
@@ -82,9 +82,10 @@ public class GraphPartialTester {
 		final List<Node> correct = new ArrayList<>();
 		correct.add(actor1);
 		correct.add(moviesGraph.getNodeByName("Movie1 (2002)"));
-		correct.add(actorsGraph.getNodeByName("Actor4"));
+		correct.add(actorsGraph.getNodeByName("Actress5"));
 		correct.add(moviesGraph.getNodeByName("Movie4 (2002)"));
 		correct.add(actor2);
+
 		assertEquals(correct, shortestPath);
 	}
 
@@ -100,15 +101,41 @@ public class GraphPartialTester {
 		final List<Node> correct = new ArrayList<>();
 		correct.add(actor1);
 		correct.add(moviesGraph.getNodeByName("Movie1 (2002)"));
-		correct.add(actorsGraph.getNodeByName("Actor4"));
+		correct.add(actorsGraph.getNodeByName("Actress5"));
 		correct.add(moviesGraph.getNodeByName("Movie4 (2002)"));
 		correct.add(actorsGraph.getNodeByName("Actor5"));
 		correct.add(moviesGraph.getNodeByName("Movie5 (2002)"));
 		correct.add(actor2);
+
 		assertEquals(correct, shortestPath);
 	}
 
-	// test between actors and actresses
+	@Test(timeout = 5000)
+	/**
+	 * Verifies that the shortest path is returned if there are multiple paths
+	 * Uses actors and actresses
+	 */
+	public void findShortestPath7() {
+		final Node actor1 = actorsGraph.getNodeByName("Actor1");
+		final Node actor2 = actorsGraph.getNodeByName("Actress4");
+		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actor2);
+		final List<Node> correct = new ArrayList<>();
+		correct.add(actor1);
+		correct.add(moviesGraph.getNodeByName("Movie1 (2002)"));
+		correct.add(actor2);
+
+		System.out.println("Correct:");
+		for (Node n : correct) {
+			System.out.println(n.getName());
+		}
+
+		System.out.println("\nShortest Path:");
+		for (Node n : shortestPath) {
+			System.out.println(n.getName());
+		}
+
+		assertEquals(correct, shortestPath);
+	}
 
 	@Test
 	/**

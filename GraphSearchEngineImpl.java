@@ -47,14 +47,14 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
             return backTrackFrom(t, s, pathStack);
         }
     }
-    
+
     /**
-     * Uses backtracking to return the shortest possible path from 
+     * Uses backtracking to return the shortest possible path from
      * the requested starting node to the requested ending node
      * @param start the requested ending node
      * @param end the requested starting node
      * @param path the stack of nodes accumulated
-     * @return the shortest possible path from the requested starting node 
+     * @return the shortest possible path from the requested starting node
      * to the requested ending node
      */
     private List<Node> backTrackFrom(Node start, Node end, Stack<Node> path) {
