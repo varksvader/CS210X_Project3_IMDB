@@ -27,8 +27,8 @@ public class GraphPartialTester {
 	 * Instantiates the actors and movies graphs
 	 */
 	public void setUp () throws IOException {
-		actorsGraph = new IMDBActorsGraph("actors_first_10000_lines.list", "actresses_first_10000_lines.list");
-		moviesGraph = new IMDBMoviesGraph("actors_first_10000_lines.list", "actresses_first_10000_lines.list");
+		actorsGraph = new IMDBActorsGraph("actors_test.list", "actresses_test.list");
+		moviesGraph = new IMDBMoviesGraph("actors_test.list", "actresses_test.list");
 		searchEngine = new GraphSearchEngineImpl();
 	}
 
@@ -72,4 +72,8 @@ public class GraphPartialTester {
 		}
 		assertTrue(found);
 	}
+
+	// other tests
+	// check a working shortest path
+	// make sure all actors in actors list all have at least 1 movie
 }

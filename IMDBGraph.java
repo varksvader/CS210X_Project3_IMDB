@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class IMDBGraph {
@@ -7,18 +8,13 @@ public class IMDBGraph {
     static class ActorNode implements Node {
 
         private String name;
-        private Collection<MovieNode> neighbors;
+        ArrayList<MovieNode> neighbors;
 
         public ActorNode(String name) {
             this.name = name;
             this.neighbors = new ArrayList<>();
         }
 
-        void addNeighbor(MovieNode m) {
-            neighbors.add(m);
-        }
-
-        @Override
         public String getName() {
             return name;
         }
@@ -26,6 +22,10 @@ public class IMDBGraph {
         @Override
         public Collection<MovieNode> getNeighbors() {
             return neighbors;
+        }
+
+        void addNeighbor(MovieNode m) {
+            neighbors.add(m);
         }
     }
 
@@ -39,11 +39,6 @@ public class IMDBGraph {
             this.neighbors = new ArrayList<>();  
         }
 
-        void addNeighbor(ActorNode m) {
-            neighbors.add(m);
-        }
-
-        @Override
         public String getName() {
             return name;
         }
@@ -51,6 +46,10 @@ public class IMDBGraph {
         @Override
         public Collection<ActorNode> getNeighbors() {
             return neighbors;
+        }
+
+        void addNeighbor(ActorNode m) {
+            neighbors.add(m);
         }
     }
 
@@ -90,6 +89,7 @@ public class IMDBGraph {
             // If new actor on this line
             if (line.indexOf(tab) != 0 && !line.isEmpty()) {
                 name = line.substring(0, line.indexOf(tab));
+                checkIfActorHasMovies(newActor);
                 newActor = new ActorNode(name);
                 actors.put(newActor.getName(), newActor);
                 if (checkTVShow(line)) {
@@ -111,7 +111,7 @@ public class IMDBGraph {
                 }
             }
         }
-        removeActorsWithoutMovies();
+        checkIfActorHasMovies(newActor);
     }
 
     private static boolean checkTVShow(String line) {
@@ -127,14 +127,12 @@ public class IMDBGraph {
         }
     }
 
-    private void removeActorsWithoutMovies() {
-        Iterator<String> iterator = actors.keySet().iterator();
-        while (iterator.hasNext()) {
-            String name = iterator.next();
-            ActorNode a = actors.get(name);
-            if (a.getNeighbors().isEmpty()) {
-                iterator.remove();
-            }
+    private void checkIfActorHasMovies(ActorNode a) {
+        if (a == null) {
+            return;
+        }
+        if (a.getNeighbors().isEmpty()) {
+            actors.remove(a.getName());
         }
     }
 
