@@ -5,21 +5,31 @@ import java.util.Map;
 
 public class IMDBActorsGraph extends IMDBGraph implements Graph {
 
-    private Map<String, ActorNode> listOfActors;
+    final protected Map<String, ActorNode> _listOfActors;
 
     public IMDBActorsGraph(String actorsFilename, String actressesFilename) throws IOException {
         super(actorsFilename, actressesFilename);
-        this.listOfActors = actors;
+        _listOfActors = actors;
         System.out.println(actors.size());
     }
 
+    /**
+	 * Returns a collection of all the nodes in the graph
+	 * @return a collection of all the nodes in the graph
+	 */
     @Override
-    public Collection<? extends Node> getNodes() {
+    public Collection<ActorNode> getNodes() {
         return new ArrayList<>(actors.values());
     }
-
+    
+    /**
+	 * Returns the node of the specified name or null if no such node exists
+	 * @param name the name of the specified node
+	 * @return the node associated with the specified name or null
+	 * if no such node exists.
+	 */
     @Override
-    public Node getNodeByName(String name) {
-        return listOfActors.get(name);
+    public ActorNode getNodeByName(String name) {
+        return _listOfActors.get(name);
     }
 }
