@@ -6,14 +6,14 @@ public class IMDBGraph {
 	
 	protected static class IMDBNode implements Node {
 
-        final String _name;
-        final Collection<IMDBNode> _neighbors;
+        final protected String _name;
+        final protected Collection<IMDBNode> _neighbors;
 
         /**
          * Constructor
          * @param name the name of the node
          */
-        IMDBNode(String name) {
+        public IMDBNode(String name) {
             _name = name;
             _neighbors = new ArrayList<>();
         }
@@ -22,7 +22,7 @@ public class IMDBGraph {
          * Adds n as a neighbor to the current node
          * @param n the node
          */
-        void addNeighbor(IMDBNode n) {
+        protected void addNeighbor(IMDBNode n) {
             _neighbors.add(n);
         }
 
@@ -43,8 +43,8 @@ public class IMDBGraph {
         public Collection<IMDBNode> getNeighbors() {
             return _neighbors;
         }
-	
-	/**
+        
+        /**
          * Override original equals only to compare names of the node
          */
         @Override
@@ -53,23 +53,18 @@ public class IMDBGraph {
     	}
     }
 
-    final static class ActorNode extends IMDBNode {
-    	
-        final private Collection<MovieNode> _neighbors;
+    final protected static class ActorNode extends IMDBNode {
 
         /**
          * Constructor
          * @param name the name of the actor
          */
-        ActorNode(String name) {
+        public ActorNode(String name) {
             super(name);
-            _neighbors = new ArrayList<>();
         }
     }
 
-    final static class MovieNode extends IMDBNode {
-
-        final private Collection<ActorNode> _neighbors;
+    final protected static class MovieNode extends IMDBNode {
 
         /**
          * Constructor
@@ -77,12 +72,11 @@ public class IMDBGraph {
          */
         public MovieNode(String name) {
             super(name);
-            _neighbors = new ArrayList<>();
         }
     }
 
-    final Map<String, ActorNode> actors;
-    final Map<String, MovieNode> movies;
+    final protected Map<String, ActorNode> actors;
+    final protected Map<String, MovieNode> movies;
 
     /**
      * Constructor
@@ -112,40 +106,34 @@ public class IMDBGraph {
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
+            //Skip copyright info
         	if (!copyrightInfoDone) {
                 if (line.equals("----			------")) {
                     copyrightInfoDone = true;
                 }
                 continue;
             }
-
+        	//Skip bottom of file
             if (line.equals("-----------------------------------------------------------------------------")) {
                 return;
             }
-
             // If new actor on this line
             if (line.indexOf(tab) != 0 && !line.isEmpty()) {
                 name = line.substring(0, line.indexOf(tab));
                 checkIfActorHasMovies(newActor);
                 newActor = new ActorNode(name);
                 actors.put(newActor.getName(), newActor);
-
                 if (line.contains("(TV)") || line.contains("\"")) {
                     continue;
                 }
-
                 final String firstMovie = line.substring(line.lastIndexOf(tab) + 1, line.lastIndexOf(")") + 1);
-
                 newMovie = new MovieNode(firstMovie);
                 actors.get(newActor.getName()).addNeighbor(newMovie);
                 addMovies(newMovie, newActor);
-                // FIXED ID ISSUE
-                
             } else {
                 if (line.contains("(TV)") || line.contains("\"")) {
                     continue;
                 }
-
                 if (!line.isEmpty()) {
                     final String movie = line.substring(tab.length() * 3, line.indexOf(")") + 1);
                     newMovie = new MovieNode(movie);
@@ -157,6 +145,11 @@ public class IMDBGraph {
         checkIfActorHasMovies(newActor);
     }
 
+    /**
+     * If an actor does not have any movies (excluding TV movies), 
+     * he/she is not included in the graph
+     * @param a the actor node
+     */
     private void checkIfActorHasMovies(ActorNode a) {
         if (a == null) {
             return;
