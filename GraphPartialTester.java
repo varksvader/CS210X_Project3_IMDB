@@ -8,8 +8,8 @@ import java.io.*;
  * Code to test Project 3; you should definitely add more tests!
  */
 public class GraphPartialTester {
-	private Graph actorsGraph, moviesGraph;
-	private GraphSearchEngine searchEngine;
+	Graph actorsGraph, moviesGraph;
+	GraphSearchEngine searchEngine;
 
 	@Test(timeout=5000)
 	/**
@@ -67,15 +67,37 @@ public class GraphPartialTester {
 		correct.add(actorsGraph.getNodeByName("Actor4"));
 		correct.add(moviesGraph.getNodeByName("Movie4 (2002)"));
 		correct.add(actor2);
+		System.out.println(correct);
+		System.out.println(shortestPath);
 		assertEquals(correct, shortestPath);
 	}
-
+	
+	@Test(timeout = 5000)
+	/**
+	 * Verifies that there is a shortest path between movie1 and
+	 * movie2.
+	 */
+	public void findShortestPath5() {
+		final Node movie1 = moviesGraph.getNodeByName("Movie5 (2002)");
+		final Node movie2 = moviesGraph.getNodeByName("Movie1 (2002)");
+		final List<Node> shortestPath = searchEngine.findShortestPath(movie1, movie2);
+		final List<Node> correct = new ArrayList<>();
+		correct.add(movie1);
+		correct.add(actorsGraph.getNodeByName("Actor5"));
+		correct.add(moviesGraph.getNodeByName("Movie4 (2002)"));
+		correct.add(actorsGraph.getNodeByName("Actor4"));
+		correct.add(movie2);
+		//System.out.println(correct);
+		//System.out.println(shortestPath);
+		assertEquals(correct, shortestPath);
+	}
+	
 	@Test(timeout = 5000)
 	/**
 	 * Verifies that there is a shortest path between a specific actor and
 	 * actress.
 	 */
-	public void findShortestPath5() {
+	public void findShortestPath6() {
 		final Node actor1 = actorsGraph.getNodeByName("Actor1");
 		final Node actor2 = actorsGraph.getNodeByName("Actor6");
 		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actor2);
@@ -85,7 +107,6 @@ public class GraphPartialTester {
 		correct.add(actorsGraph.getNodeByName("Actress5"));
 		correct.add(moviesGraph.getNodeByName("Movie4 (2002)"));
 		correct.add(actor2);
-
 		assertEquals(correct, shortestPath);
 	}
 
@@ -94,7 +115,7 @@ public class GraphPartialTester {
 	 * Verifies that there is a shortest path between a specific actor and
 	 * actress.
 	 */
-	public void findShortestPath6() {
+	public void findShortestPath7() {
 		final Node actor1 = actorsGraph.getNodeByName("Actor1");
 		final Node actor2 = actorsGraph.getNodeByName("Actor7");
 		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actor2);
@@ -115,7 +136,7 @@ public class GraphPartialTester {
 	 * Verifies that the shortest path is returned if there are multiple paths
 	 * Uses actors and actresses
 	 */
-	public void findShortestPath7() {
+	public void findShortestPath8() {
 		final Node actor1 = actorsGraph.getNodeByName("Actor1");
 		final Node actor2 = actorsGraph.getNodeByName("Actress4");
 		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actor2);
@@ -124,6 +145,7 @@ public class GraphPartialTester {
 		correct.add(moviesGraph.getNodeByName("Movie1 (2002)"));
 		correct.add(actor2);
 
+		/**
 		System.out.println("Correct:");
 		for (Node n : correct) {
 			System.out.println(n.getName());
@@ -132,10 +154,14 @@ public class GraphPartialTester {
 		System.out.println("\nShortest Path:");
 		for (Node n : shortestPath) {
 			System.out.println(n.getName());
-		}
+		}**/
+		
+		System.out.println(correct);
+		System.out.println(shortestPath);
 
 		assertEquals(correct, shortestPath);
 	}
+
 
 	@Test
 	/**
