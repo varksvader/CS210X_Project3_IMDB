@@ -15,11 +15,43 @@ public class GraphPartialTester {
 	/**
 	 * Verifies that there is no shortest path between a specific and actor and actress.
 	 */
-	public void findShortestPath () {
-		final Node actor1 = actorsGraph.getNodeByName("Actor1");
-		final Node actress2 = actorsGraph.getNodeByName("Actress2");
-		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actress2);
-		assertNull(shortestPath);  // there is no path between these people
+	public void findShortestPath1 () {
+		final Node actor1 = actorsGraph.getNodeByName("A'Dair, Michelle");
+		final Node actor2 = actorsGraph.getNodeByName("A'Dair, Renee");
+		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actor2);
+		final List<Node> correct = new ArrayList<Node>();
+		correct.add(actor1);
+		correct.add(moviesGraph.getNodeByName("Sierra Spirits (2009)"));
+		correct.add(actor2);
+		assertEquals(correct, shortestPath);  // there is no path between these people
+	}
+	
+	@Test(timeout = 5000)
+	/**
+	 * Verifies that there is no shortest path between a specific and actor and
+	 * actress.
+	 */
+	public void findShortestPath2() {
+		final Node actor1 = actorsGraph.getNodeByName("Brad Pitt");
+		final Node actor2 = actorsGraph.getNodeByName("Jonah Hill");
+		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actor2);
+		assertNull(shortestPath); // there is no path between these people
+		
+	}
+	
+	@Test(timeout = 5000)
+	/**
+	 * Verifies that there is a shortest path between a specific actor and
+	 * actress.
+	 */
+	public void findShortestPath3() {
+		final Node actor1 = actorsGraph.getNodeByName("A'Dair, Michelle");
+		final Node actor2 = actorsGraph.getNodeByName("A'Dair, Michelle");
+		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actor2);
+		final List<Node> correct = new ArrayList<Node>();
+		correct.add(actor1);
+		assertEquals(correct, shortestPath); // there is no path between these people
+		
 	}
 
 	@Before
@@ -27,8 +59,8 @@ public class GraphPartialTester {
 	 * Instantiates the actors and movies graphs
 	 */
 	public void setUp () throws IOException {
-		actorsGraph = new IMDBActorsGraph("actors_test.list", "actresses_test.list");
-		moviesGraph = new IMDBMoviesGraph("actors_test.list", "actresses_test.list");
+		actorsGraph = new IMDBActorsGraph("actors_first_10000_lines.list", "actresses_first_10000_lines.list");
+		moviesGraph = new IMDBMoviesGraph("actors_first_10000_lines.list", "actresses_first_10000_lines.list");
 		searchEngine = new GraphSearchEngineImpl();
 	}
 
@@ -46,7 +78,7 @@ public class GraphPartialTester {
 	 * Verifies that a specific movie has been parsed.
 	 */
 	public void testSpecificMovie () {
-		testFindNode(moviesGraph, "Movie1 (2001)");
+		testFindNode(moviesGraph, "Mixing Nia (1998)");
 	}
 
 	@Test
@@ -54,7 +86,7 @@ public class GraphPartialTester {
 	 * Verifies that a specific actress has been parsed.
 	 */
 	public void testSpecificActress () {
-		testFindNode(actorsGraph, "Actress2");
+		testFindNode(actorsGraph, "A. Ross, Marissa");
 	}
 
 	/**
@@ -72,8 +104,4 @@ public class GraphPartialTester {
 		}
 		assertTrue(found);
 	}
-
-	// other tests
-	// check a working shortest path
-	// make sure all actors in actors list all have at least 1 movie
 }
