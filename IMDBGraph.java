@@ -95,9 +95,10 @@ public class IMDBGraph {
                 if (checkTVShow(line)) {
                     continue;
                 }
+                // FIXED ID ISSUE
                 final String firstMovie = line.substring(line.lastIndexOf(tab) + 1, line.lastIndexOf(")") + 1);
-                actors.get(newActor.getName()).addNeighbor(new MovieNode(firstMovie));
                 newMovie = new MovieNode(firstMovie);
+                actors.get(newActor.getName()).addNeighbor(newMovie);
                 addMovie(newMovie, newActor);
             } else {
                 if (checkTVShow(line)) {
