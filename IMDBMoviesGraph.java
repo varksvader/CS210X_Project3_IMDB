@@ -7,10 +7,15 @@ public class IMDBMoviesGraph extends IMDBGraph implements Graph {
 
     final private Map<String, MovieNode> _listOfMovies;
 
+    /**
+     * Constructor
+     * @param actorsFilename the filename of the actors
+     * @param actressesFilename the filename of the actresses
+     * @throws IOException
+     */
     public IMDBMoviesGraph(String actorsFilename, String actressesFilename) throws IOException {
         super(actorsFilename, actressesFilename);
         _listOfMovies = movies;
-        System.out.println(movies.size());
     }
 
     /**
