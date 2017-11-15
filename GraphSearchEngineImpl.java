@@ -18,53 +18,63 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
         List<Node> visited = new ArrayList<Node>();
         Queue<Node> toVisit = new LinkedList<Node>();
         Stack<Node> pathStack = new Stack<Node>();
-        
         if (s == null || t == null) {
             return null;
         } else if (s.equals(t)) {
             shortestPathList.add(s);
             return shortestPathList;
-        }
-
-        toVisit.add(s);
-        pathStack.add(s);
-        visited.add(s);
-
-        Node u = null;
-        while(!toVisit.isEmpty())
-        {
-            u = toVisit.poll();
-
-            for(Node neighbor : u.getNeighbors())
+        } else {
+        	toVisit.add(s);
+            pathStack.add(s);
+            visited.add(s);
+            Node currentNode = null;
+            while(!toVisit.isEmpty())
             {
-                if(!visited.contains(neighbor))
+                currentNode = toVisit.poll();
+                for(Node neighbor : currentNode.getNeighbors())
                 {
-                    toVisit.add(neighbor);
-                    visited.add(neighbor);
-                    pathStack.add(neighbor);
-                    if(u.equals(t))
-                        break;
+                    if(!visited.contains(neighbor))
+                    {
+                        toVisit.add(neighbor);
+                        visited.add(neighbor);
+                        pathStack.add(neighbor);
+                        if(currentNode.equals(t)) {
+                        	break;
+                        }
+                    }
                 }
             }
+            return backTrackFrom(t, s, pathStack);
         }
-        
-        //To find the path
-        Node node = null;
-        Node currentSrc = t;
-        shortestPathList.add(t);
-        while(!pathStack.isEmpty())
+    }
+    
+    /**
+     * Uses backtracking to return the shortest possible path from 
+     * the requested starting node to the requested ending node
+     * @param start the requested ending node
+     * @param end the requested starting node
+     * @param path the stack of nodes accumulated
+     * @return the shortest possible path from the requested starting node 
+     * to the requested ending node
+     */
+    private List<Node> backTrackFrom(Node start, Node end, Stack<Node> path) {
+    	List<Node> shortestPathList = new ArrayList<Node>();
+    	Node nextNode = null;
+        Node recent = start;
+        shortestPathList.add(start);
+        while(!path.isEmpty())
         {
-            node = pathStack.pop();
-            if(currentSrc.getNeighbors().contains(node))
+            nextNode = path.pop();
+            if(recent.getNeighbors().contains(nextNode))
             {
-                shortestPathList.add(node);
-                
-                currentSrc = node;
-                if(node.equals(s) /** == s**/)
-                    break;
+                shortestPathList.add(nextNode);
+                recent = nextNode;
+                if(nextNode.equals(end)) {
+                	break;
+                }
             }
         }
         Collections.reverse(shortestPathList);
         return shortestPathList;
-     }
+    }
 }
