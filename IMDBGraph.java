@@ -131,6 +131,7 @@ public class IMDBGraph {
                 newMovie = new MovieNode(firstMovie);
                 actors.get(newActor.getName()).addNeighbor(newMovie);
                 addMovies(newMovie, newActor);
+                // FIXED ID ISSUE
                 
             } else {
                 if (line.contains("(TV)") || line.contains("\"")) {
