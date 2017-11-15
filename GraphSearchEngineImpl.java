@@ -47,7 +47,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
                 }
             }
         }
-
+        
         //To find the path
         Node node = null;
         Node currentSrc = t;
@@ -64,13 +64,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
                     break;
             }
         }
-        
-        shortestPathList.add(s);
-        
         Collections.reverse(shortestPathList);
-        
-        System.out.println(shortestPathList);
-        
         return shortestPathList;
      }
 }
