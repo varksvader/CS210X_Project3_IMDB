@@ -13,7 +13,7 @@ public class GraphPartialTester {
 
 	@Test(timeout=5000)
 	/**
-	 * Verifies that there is no shortest path between a specific and actor and actress.
+	 * Verifies that there is a shortest path between actor1 and actor2.
 	 */
 	public void findShortestPath1 () {
 		final Node actor1 = actorsGraph.getNodeByName("A'Dair, Michelle");
@@ -28,8 +28,8 @@ public class GraphPartialTester {
 	
 	@Test(timeout = 5000)
 	/**
-	 * Verifies that there is no shortest path between a specific and actor and
-	 * actress.
+	 * Verifies that there is no shortest path between actor1 and
+	 * actor2.
 	 */
 	public void findShortestPath2() {
 		final Node actor1 = actorsGraph.getNodeByName("Brad Pitt");
@@ -41,8 +41,7 @@ public class GraphPartialTester {
 	
 	@Test(timeout = 5000)
 	/**
-	 * Verifies that there is a shortest path between a specific actor and
-	 * actress.
+	 * Verifies that there is a shortest path between the same actor.
 	 */
 	public void findShortestPath3() {
 		final Node actor1 = actorsGraph.getNodeByName("A'Dair, Michelle");
