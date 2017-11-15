@@ -45,7 +45,8 @@ public class IMDBGraph {
         }
         
         /**
-         * Override original equals only to compare names of the node
+         * Overrides original equals only to compare names of the node
+	 * @param o an object to compare to the called object
          */
         @Override
         public boolean equals(Object o) {
