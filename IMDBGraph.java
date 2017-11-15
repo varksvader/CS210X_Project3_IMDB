@@ -6,14 +6,14 @@ public class IMDBGraph {
 	
 	protected static class IMDBNode implements Node {
 
-        final protected String _name;
-        final protected Collection<IMDBNode> _neighbors;
+        final String _name;
+        final Collection<IMDBNode> _neighbors;
 
         /**
          * Constructor
          * @param name the name of the node
          */
-        public IMDBNode(String name) {
+        IMDBNode(String name) {
             _name = name;
             _neighbors = new ArrayList<>();
         }
@@ -22,7 +22,7 @@ public class IMDBGraph {
          * Adds n as a neighbor to the current node
          * @param n the node
          */
-        public void addNeighbor(IMDBNode n) {
+        void addNeighbor(IMDBNode n) {
             _neighbors.add(n);
         }
 
@@ -45,7 +45,7 @@ public class IMDBGraph {
         }
     }
 
-    final protected static class ActorNode extends IMDBNode {
+    final static class ActorNode extends IMDBNode {
     	
         final private Collection<MovieNode> _neighbors;
 
@@ -53,13 +53,13 @@ public class IMDBGraph {
          * Constructor
          * @param name the name of the actor
          */
-        public ActorNode(String name) {
+        ActorNode(String name) {
             super(name);
             _neighbors = new ArrayList<>();
         }
     }
 
-    final protected static class MovieNode extends IMDBNode {
+    final static class MovieNode extends IMDBNode {
 
         final private Collection<ActorNode> _neighbors;
 
@@ -73,9 +73,8 @@ public class IMDBGraph {
         }
     }
 
-    final private Scanner actorsScanner, actressesScanner;
-    final protected Map<String, ActorNode> actors;
-    final protected Map<String, MovieNode> movies;
+    final Map<String, ActorNode> actors;
+    final Map<String, MovieNode> movies;
 
     /**
      * Constructor
@@ -84,8 +83,8 @@ public class IMDBGraph {
      * @throws IOException
      */
     public IMDBGraph(String actorsFilename, String actressesFilename) throws IOException {
-        actorsScanner = new Scanner(new File(actorsFilename), "ISO-8859-1");
-        actressesScanner = new Scanner(new File(actressesFilename), "ISO-8859-1");
+        final Scanner actorsScanner = new Scanner(new File(actorsFilename), "ISO-8859-1");
+        final Scanner actressesScanner = new Scanner(new File(actressesFilename), "ISO-8859-1");
         actors = new LinkedHashMap<>();
         movies = new LinkedHashMap<>();
         parseData(actorsScanner);
@@ -119,6 +118,7 @@ public class IMDBGraph {
             // If new actor on this line
             if (line.indexOf(tab) != 0 && !line.isEmpty()) {
                 name = line.substring(0, line.indexOf(tab));
+                checkIfActorHasMovies(newActor);
                 newActor = new ActorNode(name);
                 actors.put(newActor.getName(), newActor);
 
@@ -128,8 +128,8 @@ public class IMDBGraph {
 
                 final String firstMovie = line.substring(line.lastIndexOf(tab) + 1, line.lastIndexOf(")") + 1);
 
-                actors.get(newActor.getName()).addNeighbor(new MovieNode(firstMovie));
                 newMovie = new MovieNode(firstMovie);
+                actors.get(newActor.getName()).addNeighbor(newMovie);
                 addMovies(newMovie, newActor);
                 
             } else {
@@ -145,20 +145,15 @@ public class IMDBGraph {
                 }
             }
         }
-        removeActorsWithoutMovies();
+        checkIfActorHasMovies(newActor);
     }
 
-    /**
-     * Removes actors without movies
-     */
-    private void removeActorsWithoutMovies() {
-        Iterator<String> iterator = actors.keySet().iterator();
-        while(iterator.hasNext()) {
-            String name = iterator.next();
-            ActorNode a = actors.get(name);
-            if (a.getNeighbors().isEmpty()) {
-                iterator.remove();
-            }
+    private void checkIfActorHasMovies(ActorNode a) {
+        if (a == null) {
+            return;
+        }
+        if (a.getNeighbors().isEmpty()) {
+            actors.remove(a.getName());
         }
     }
     
