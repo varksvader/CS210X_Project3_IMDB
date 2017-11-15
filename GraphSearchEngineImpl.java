@@ -14,16 +14,17 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 	 */
     @Override
     public List<Node> findShortestPath(Node s, Node t) {
-        ArrayList<Node> shortestPathList = new ArrayList<Node>();
-        ArrayList<Node> visited = new ArrayList<Node>();
-        
-        if()
-        
-        if (s.equals(t))
-            return null;
-
+        List<Node> shortestPathList = new ArrayList<Node>();
+        List<Node> visited = new ArrayList<Node>();
         Queue<Node> toVisit = new LinkedList<Node>();
         Stack<Node> pathStack = new Stack<Node>();
+        
+        if (s == null || t == null) {
+            return null;
+        } else if (s.equals(t)) {
+            shortestPathList.add(s);
+            return shortestPathList;
+        }
 
         toVisit.add(s);
         pathStack.add(s);
@@ -57,12 +58,19 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
             if(currentSrc.getNeighbors().contains(node))
             {
                 shortestPathList.add(node);
+                
                 currentSrc = node;
-                if(node.equals(s))
+                if(node.equals(s) /** == s**/)
                     break;
             }
         }
-
+        
+        shortestPathList.add(s);
+        
+        Collections.reverse(shortestPathList);
+        
+        System.out.println(shortestPathList);
+        
         return shortestPathList;
      }
 }
