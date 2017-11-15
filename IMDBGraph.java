@@ -14,7 +14,7 @@ public class IMDBGraph {
             this.neighbors = new ArrayList<>();
         }
 
-        public void addNeighbor(MovieNode m) {
+        void addNeighbor(MovieNode m) {
             neighbors.add(m);
         }
 
@@ -36,10 +36,10 @@ public class IMDBGraph {
 
         public MovieNode(String name) {
             this.name = name;
-            this.neighbors = new ArrayList<>();
+            this.neighbors = new ArrayList<>();  
         }
 
-        public void addNeighbor(ActorNode m) {
+        void addNeighbor(ActorNode m) {
             neighbors.add(m);
         }
 
@@ -55,13 +55,12 @@ public class IMDBGraph {
     }
 
 
-    private Scanner actorsScanner, actressesScanner;
     Map<String, ActorNode> actors;
     Map<String, MovieNode> movies;
 
     public IMDBGraph(String actorsFilename, String actressesFilename) throws IOException {
-        actorsScanner = new Scanner(new File(actorsFilename), "ISO-8859-1");
-        actressesScanner = new Scanner(new File(actressesFilename), "ISO-8859-1");
+        final Scanner actorsScanner = new Scanner(new File(actorsFilename), "ISO-8859-1");
+        final Scanner actressesScanner = new Scanner(new File(actressesFilename), "ISO-8859-1");
         actors = new LinkedHashMap<>();
         movies = new LinkedHashMap<>();
         parseData(actorsScanner);
@@ -69,7 +68,7 @@ public class IMDBGraph {
     }
 
     private void parseData(Scanner scanner) {
-        final String tab = "\t"; // 4 spaces
+        final String tab = "\t";
         Boolean copyrightInfoDone = false;
         String name;
         ActorNode newActor = null;
@@ -77,16 +76,13 @@ public class IMDBGraph {
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-
             // Skips the first few hundred lines with the copyright information
             if (!copyrightInfoDone) {
                 if (line.equals("----			------")) {
                     copyrightInfoDone = true;
-                    // scanner.nextLine();
                 }
                 continue;
             }
-
             if (line.equals("-----------------------------------------------------------------------------")) {
                 return;
             }
@@ -96,51 +92,44 @@ public class IMDBGraph {
                 name = line.substring(0, line.indexOf(tab));
                 newActor = new ActorNode(name);
                 actors.put(newActor.getName(), newActor);
-
-                if (line.contains("(TV)") || line.contains("\"")) {
+                if (checkTVShow(line)) {
                     continue;
                 }
-
                 final String firstMovie = line.substring(line.lastIndexOf(tab) + 1, line.lastIndexOf(")") + 1);
-
                 actors.get(newActor.getName()).addNeighbor(new MovieNode(firstMovie));
                 newMovie = new MovieNode(firstMovie);
-
-                // if the movie is already in the list
-                if (movies.containsKey(newMovie.getName())) {
-                    movies.get(newMovie.getName()).addNeighbor(newActor);
-                } else {
-                    newMovie.addNeighbor(newActor);
-                    movies.put(newMovie.getName(), newMovie);
-                }
+                addMovie(newMovie, newActor);
             } else {
-                if (line.contains("(TV)") || line.contains("\"")) {
+                if (checkTVShow(line)) {
                     continue;
                 }
-
                 if (!line.isEmpty()) {
                     final String movie = line.substring(tab.length() * 3, line.indexOf(")") + 1);
                     newMovie = new MovieNode(movie);
-
-                    // if the movie is already in the list
-                    if (movies.containsKey(newMovie.getName())) {
-                        movies.get(newMovie.getName()).addNeighbor(newActor);
-                    } else {
-                        newMovie.addNeighbor(newActor);
-                        movies.put(newMovie.getName(), newMovie);
-                    }
-
+                    addMovie(newMovie, newActor);
                     actors.get(newActor.getName()).addNeighbor(newMovie);
                 }
             }
         }
-
         removeActorsWithoutMovies();
+    }
+
+    private static boolean checkTVShow(String line) {
+        return (line.contains("(TV)") || line.contains("\""));
+    }
+
+    private void addMovie(MovieNode newMovie, ActorNode newActor) {
+        if (movies.containsKey(newMovie.getName())) {
+            movies.get(newMovie.getName()).addNeighbor(newActor);
+        } else {
+            newMovie.addNeighbor(newActor);
+            movies.put(newMovie.getName(), newMovie);
+        }
     }
 
     private void removeActorsWithoutMovies() {
         Iterator<String> iterator = actors.keySet().iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             String name = iterator.next();
             ActorNode a = actors.get(name);
             if (a.getNeighbors().isEmpty()) {

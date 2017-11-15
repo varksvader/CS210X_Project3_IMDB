@@ -16,8 +16,8 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
          toVisit.add(s);
          pathStack.add(s);
          visited.add(s);
-         Node u = null;
-         while( !toVisit.isEmpty()) {
+         Node u;
+         while(!toVisit.isEmpty()) {
              u = toVisit.poll();
              for(Node neighbor : u.getNeighbors()) {
                  if(!visited.contains(neighbor)) {
@@ -31,7 +31,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
          }
 
          //To find the path
-         Node node = null;
+         Node node;
          Node currentSrc = t;
          shortestPathList.add(t);
          while(!pathStack.isEmpty()) {

@@ -1,4 +1,4 @@
-CRC: 0x7544B660  File: actresses.list  Date: Fri Aug  5 00:00:00 2016
+CRC: 0x3D236E91  File: actresses.list  Date: Fri Aug 26 00:00:00 2016
 
 Copyright 1993-2007 The Internet Movie Database, Inc.  All rights reserved.
 
@@ -10,8 +10,8 @@ COPYING POLICY: Internet Movie Database (IMDb)
     made to  ensure  the  accuracy  of  the  database  IMDb  gives  no
     warranty  as  to  the accuracy of the information contained in the
     database.  IMDb  reserves  the  right  to   withdraw   or   delete
-    information at any time. 
-       
+    information at any time.
+
     This service is provided for the information of users only. It  is
     not   provided  with  the  intention  that  users  rely  upon  the
     information for any purposes. Accordingly,  IMDb  shall  under  no
@@ -19,69 +19,69 @@ COPYING POLICY: Internet Movie Database (IMDb)
     limited to loss of profits, goodwill or indirect or  consequential
     loss   arising   out   of  any  use  of  or  inaccuracies  in  the
     information. All warranties express or  implied  are  excluded  to
-    the fullest extent permissible by law. 
-       
+    the fullest extent permissible by law.
+
     All information in this file  is  Copyright  2005  Internet  Movie
     Database  Limited.  Reproduction,  distribution or transmission by
     any means without the prior permission of IMDb is prohibited.  All
-    rights reserved. 
+    rights reserved.
 
     For further info visit http://www.imdb.com/licensing/contact
-       
+
          -------------------------------------------------------
-   
+
     All data and software released by Internet Movie Database  Ltd  is
     freely  available  to  anyone  within certain limitations. You are
     encouraged to quote subsets of the database  in  USENET  articles,
     movie  related  FAQs,  magazine  articles etc. We do ask, however,
     that you make reference to the source of the data  and  provide  a
-    pointer to the database for the benefit of the reader. 
-       
+    pointer to the database for the benefit of the reader.
+
     Permission is granted  by  the  copyright  holder  to  allow  free
     distribution  of  this  file  and  any  other part of the Internet
     Movie  Database  in  an  ELECTRONIC  FORM  ONLY,   providing   the
-    following conditions are met: 
-       
+    following conditions are met:
+
          1. NO FEE OF ANY KIND, however indirect, will be  charged
             for  its  distribution.  If  this file is being stored
             for  later  distribution  to  anyone   that   can   be
             construed   as   a   customer   of  yourself  or  your
             organisation YOU MUST contact Internet Movie  Database
-            Ltd for permission. 
-            
+            Ltd for permission.
+
          2. Each  of  the  database  files  may   be   distributed
             individually  but  only  in an unaltered form. All the
             header and trailer information, including this  notice
             and  the  details  on how to access the database, must
-            remain intact. 
-            
+            remain intact.
+
          3. Specifically the files may NOT be  used  to  construct
             any  kind  of  on-line database (except for individual
             personal use). Clearance for  ALL  such  on-line  data
             resources   must  be  requested  from  Internet  Movie
-            Database Ltd 
-            
+            Database Ltd
+
          4. In addition, copies of  the  Internet  Movie  Database
             frequently  asked  questions  list and additions guide
             must be made available in the same area / by the  same
-            method as the other database files. 
+            method as the other database files.
 
          5. CD-ROM  distribution  is  prohibited  without  written
-            permission from the Internet Movie Database Ltd 
-            
+            permission from the Internet Movie Database Ltd
+
     Distribution by e-mail, BBS and  Internet  systems  is  positively
-    encouraged within these limitations. 
-       
+    encouraged within these limitations.
+
     The files and software which make up the  movie  database  may  be
     uploaded  to  commercial  BBS  systems  providing  that  the above
     conditions are met and no *additional* fees are applied above  the
-    standard connect time or downloading charges. 
+    standard connect time or downloading charges.
 
     For further info visit http://www.imdb.com/licensing/contact
 
          -------------------------------------------------------
 
-Welcome to the latest version of the actresses list. 
+Welcome to the latest version of the actresses list.
 
 Please feel free to submit entries for actresses not already on the list,
 or new entries for existing actresses.
@@ -95,9 +95,9 @@ http://imdb.com/updates only. The section at the end of the list contains
 details on the formats to use. The copying policy is also described at
 the end of the list.
 
-  
-The Internet Movie Database consists of the following lists:               
-             
+
+The Internet Movie Database consists of the following lists:
+
  List                 | Maintained by                             | Updated
  ---------------------|-------------------------------------------|----------
  Actors               | Giancarlo Cairella http://imdb.com/contact| 24-06-05
@@ -148,7 +148,7 @@ The Internet Movie Database consists of the following lists:
  Writers              | Duncan Smith http://imdb.com/contact/     | 17-06-05
  ----------------------------------------------------------------------------
   								    dd/mm/yy
-  
+
 SEARCHING THE DATABASE
 ======================
 
@@ -170,7 +170,7 @@ ways to access the database:
         http://www.imdb.com/
 
 (2) e-mail interface
-  
+
     For details send a message with the subject HELP to <mail-server@imdb.com>
 
 (3) local installation (Unix/Amiga)
@@ -186,7 +186,7 @@ ways to access the database:
 
  ftp.sunet.se  in  /pub/tv+movies/imdb/tools/moviedb-3.4a.tar.gz
 
-    see the README file in the same directories for more information. The 
+    see the README file in the same directories for more information. The
     Amiga version is in the file imdb3_5_Amiga.lha
 
 (4) local installation (OS/2)
@@ -229,17 +229,18 @@ RULES:
 [xxxxx]        = character name
 <xx>           = number to indicate billing position in credits
 (TV)           = TV movie, or made for cable movie
-(V)            = made for video movie (this category does NOT include TV 
-                 episodes repackaged for video, guest appearances in 
-                 variety/comedy specials released on video, or 
+(V)            = made for video movie (this category does NOT include TV
+                 episodes repackaged for video, guest appearances in
+                 variety/comedy specials released on video, or
                  self-help/physical fitness videos)
 
 THE ACTRESSES LIST
 ==================
 
-Name			Titles 
+Name			Titles
 ----			------
-
 Actress1	Movie1 (2001)
 
 Actress2	Movie2 (2002)
+
+Actress3	Movie3 (2002)

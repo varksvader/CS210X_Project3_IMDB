@@ -10,6 +10,7 @@ public class IMDBActorsGraph extends IMDBGraph implements Graph {
     public IMDBActorsGraph(String actorsFilename, String actressesFilename) throws IOException {
         super(actorsFilename, actressesFilename);
         this.listOfActors = actors;
+        System.out.println(actors.size());
     }
 
     @Override
