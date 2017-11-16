@@ -87,12 +87,6 @@ public class GraphPartialTester {
 		correct.add(movie2);
 		System.out.println(correct);
 		System.out.println(shortestPath);
-
-		for (Node a : moviesGraph.getNodeByName("Movie4 (2002)").getNeighbors()) {
-			System.out.println(a.getName());
-		}
-
-
 		assertEquals(correct, shortestPath);
 	}
 	
@@ -131,7 +125,6 @@ public class GraphPartialTester {
 		correct.add(actorsGraph.getNodeByName("Actor5"));
 		correct.add(moviesGraph.getNodeByName("Movie5 (2002)"));
 		correct.add(actor2);
-
 		assertEquals(correct, shortestPath);
 	}
 
@@ -167,8 +160,8 @@ public class GraphPartialTester {
 	 * Instantiates the actors and movies graphs
 	 */
 	public void setUp () throws IOException {
-		actorsGraph = new IMDBActorsGraph("C:\\Users\\nilsb\\Downloads\\IMDB\\actors.list", "C:\\Users\\nilsb\\Downloads\\IMDB\\actresses.list");
-		moviesGraph = new IMDBMoviesGraph("C:\\Users\\nilsb\\Downloads\\IMDB\\actorslist", "C:\\Users\\nilsb\\Downloads\\IMDB\\actresses.list");
+		actorsGraph = new IMDBActorsGraph("actors_first_10000_lines.list", "actresses_first_10000_lines.list");
+		moviesGraph = new IMDBMoviesGraph("actors_first_10000_lines.list", "actresses_first_10000_lines.list");
 		searchEngine = new GraphSearchEngineImpl();
 	}
 
