@@ -70,7 +70,7 @@ public class GraphPartialTester {
         assertEquals(correct, shortestPath);
 	}
 	
-	@Test(timeout = 5000)
+	//@Test(timeout = 5000)
 	/**
 	 * Verifies that there is a shortest path between movie1 and
 	 * movie2.
@@ -151,7 +151,7 @@ public class GraphPartialTester {
 	 * Verifies that an actor that has only starred in TV shows in not present in the actors list
 	 */
 	public void testActorOnlyInTVShows() {
-		assertNull(actorsGraph.getNodeByName("$, Chaw"));
+		assertNull(actorsGraph.getNodeByName("'Curly' Leach, Timothy"));
 	}
 
 
@@ -191,6 +191,7 @@ public class GraphPartialTester {
 		testFindNode(actorsGraph, "A. Ross, Marissa");
 	}
 
+	//@Test
 	/**
 	 * Verifies that the specific graph contains a node with the specified name
 	 * @param graph the Graph to search for the node
