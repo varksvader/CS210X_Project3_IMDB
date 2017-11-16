@@ -3,202 +3,201 @@ import java.io.IOException;
 import java.util.*;
 
 public class IMDBGraph {
-	
-    static class IMDBNode implements Node {
 
-        final private String _name;
-        final private Collection<IMDBNode> _neighbors;
+	protected static class IMDBNode implements Node {
 
-        /**
-         * Constructor
-         * @param name the name of the node
-         */
-        IMDBNode(String name) {
-            _name = name;
-            _neighbors = new ArrayList<>();
-        }
+		final private String _name;
+		final private Collection<IMDBNode> _neighbors;
 
-        /**
-         * Adds n as a neighbor to the current node
-         * @param n the node
-         */
-        void addNeighbor(IMDBNode n) {
-            _neighbors.add(n);
-        }
+		/**
+		 * Constructor
+		 * @param name the name of the node
+		 */
+		public IMDBNode(String name) {
+			_name = name;
+			_neighbors = new ArrayList<>();
+		}
 
-        /**
-         * Returns the name of the node
-         * @return the name of the node
-         */
-        @Override
-        public String getName() {
-            return _name;
-        }
+		/**
+		 * Adds n as a neighbor to the current node
+		 * @param n the node
+		 */
+		protected void addNeighbor(IMDBNode n) {
+			_neighbors.add(n);
+		}
 
-        /**
-    	 * Returns the collection of all the neighbors of the node
-    	 * @return the collection of all the neighbors of the node
-    	 */
-        @Override
-        public Collection<IMDBNode> getNeighbors() {
-            return _neighbors;
-        }
-        
-        /**
-         * Overrides original equals only to compare names of the node
-	 * @param o an object to compare to the called object
-         */
-        @Override
-        public boolean equals(Object o) {
-    		return (((Node) o).getName().equals(_name));
-    	}
-    }
+		/**
+		 * Returns the name of the node
+		 * @return the name of the node
+		 */
+		@Override
+		public String getName() {
+			return _name;
+		}
 
-    final static class ActorNode extends IMDBNode {
+		/**
+		 * Returns the collection of all the neighbors of the node
+		 * @return the collection of all the neighbors of the node
+		 */
+		@Override
+		public Collection<IMDBNode> getNeighbors() {
+			return _neighbors;
+		}
 
-        /**
-         * Constructor
-         * @param name the name of the actor
-         */
-        ActorNode(String name) {
-            super(name);
-        }
-    }
+		/**
+		 * Overrides original equals only to compare names of the node
+		 * @param o an object to compare to the called object
+		 */
+		@Override
+		public boolean equals(Object o) {
+			return (((Node) o).getName().equals(_name));
+		}
+	}
 
-    final static class MovieNode extends IMDBNode {
+	final protected static class ActorNode extends IMDBNode {
 
-        /**
-         * Constructor
-         * @param name the name of the movie
-         */
-        MovieNode(String name) {
-            super(name);
-        }
-    }
+		/**
+		 * Constructor
+		 * @param name the name of the actor
+		 */
+		public ActorNode(String name) {
+			super(name);
+		}
+	}
 
-    final protected Map<String, ActorNode> actors;
-    final Map<String, MovieNode> movies;
+	final protected static class MovieNode extends IMDBNode {
 
-    /**
-     * Constructor
-     * @param actorsFilename the filename of the actors
-     * @param actressesFilename the filename of the actresses
-     * @throws IOException if the file is not found
-     */
-    public IMDBGraph(String actorsFilename, String actressesFilename) throws IOException {
-        final Scanner actorsScanner = new Scanner(new File(actorsFilename), "ISO-8859-1");
-        final Scanner actressesScanner = new Scanner(new File(actressesFilename), "ISO-8859-1");
-        actors = new LinkedHashMap<>();
-        movies = new LinkedHashMap<>();
-        parseData(actorsScanner);
-        parseData(actressesScanner);
-    }
+		/**
+		 * Constructor
+		 * @param name the name of the movie
+		 */
+		public MovieNode(String name) {
+			super(name);
+		}
+	}
 
-    /**
-     * Parses through the given files from the scanner to construct a graph
-     * @param scanner the scanner object used for the IMDB files
-     */
-    private void parseData(Scanner scanner) {
-        final String tab = "\t"; // 4 spaces
-        Boolean copyrightInfoDone = false;
-        String name;
-        ActorNode newActor = null;
-        MovieNode newMovie;
+	final protected Map<String, ActorNode> actors;
+	final protected Map<String, MovieNode> movies;
 
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            //Skip copyright info
-        	if (!copyrightInfoDone) {
-                if (line.equals("----			------")) {
-                    copyrightInfoDone = true;
-                }
-                continue;
-            }
-        	//Skip bottom of file
-            if (line.equals("-----------------------------------------------------------------------------")) {
-                return;
-            }
-            // If new actor on this line
-            if (line.indexOf(tab) != 0 && !line.isEmpty()) {
-                name = line.substring(0, line.indexOf(tab));
-                // check to see if the actor has only starred in TV shows
-                checkIfActorHasMovies(newActor);
-                newActor = new ActorNode(name);
-                // add new actor
-                actors.put(newActor.getName(), newActor);
-                // check if the first movie is a TV show
-                if (checkTVShow(line)) {
-                    continue;
-                }
-                final String firstMovie = getMovieAtLine(line);
-                newMovie = new MovieNode(firstMovie);
-                actors.get(newActor.getName()).addNeighbor(newMovie);
-                addMovies(newMovie, newActor);
-            } else {
-                // check if the first movie is a TV show
-                if (checkTVShow(line)) {
-                    continue;
-                }
-                // if there is another movie, add it to the list, and add the neighbor
-                if (!line.isEmpty()) {
-                    final String movie = getMovieAtLine(line);
-                    newMovie = new MovieNode(movie);
-                    addMovies(newMovie, newActor);
-                    actors.get(newActor.getName()).addNeighbor(newMovie);
-                }
-            }
-        }
-        checkIfActorHasMovies(newActor);
-    }
+	/**
+	 * Constructor
+	 * @param actorsFilename the filename of the actors
+	 * @param actressesFilename the filename of the actresses
+	 * @throws IOException if the file is not found
+	 */
+	public IMDBGraph(String actorsFilename, String actressesFilename) throws IOException {
+		final Scanner actorsScanner = new Scanner(new File(actorsFilename), "ISO-8859-1");
+		final Scanner actressesScanner = new Scanner(new File(actressesFilename), "ISO-8859-1");
+		actors = new LinkedHashMap<>();
+		movies = new LinkedHashMap<>();
+		parseData(actorsScanner);
+		parseData(actressesScanner);
+	}
 
-    /**
-     * Extracts the movie title from the given line
-     * @param line The line of the data file
-     * @return the movie title
-     */
-    private static String getMovieAtLine(String line) {
-        if (line.contains("(V)")) {
-            return line.substring(line.lastIndexOf("\t") + 1, line.lastIndexOf(")") - 4);
-        } else {
-            return line.substring(line.lastIndexOf("\t") + 1, line.lastIndexOf(")") + 1);
-        }
-    }
+	/**
+	 * Parses through the given files from the scanner to construct a graph
+	 * @param scanner the scanner object used for the IMDB files
+	 */
+	private void parseData(Scanner scanner) {
+		final String tab = "\t"; // 4 spaces
+		Boolean copyrightInfoDone = false;
+		String name;
+		ActorNode newActor = null;
+		MovieNode newMovie;
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			// Skip copyright info
+			if (!copyrightInfoDone) {
+				if (line.equals("----			------")) {
+					copyrightInfoDone = true;
+				}
+				continue;
+			}
+			// Skip bottom of file
+			if (line.equals("-----------------------------------------------------------------------------")) {
+				return;
+			}
+			// If new actor on this line
+			if (line.indexOf(tab) != 0 && !line.isEmpty()) {
+				name = line.substring(0, line.indexOf(tab));
+				// check to see if the actor has only starred in TV shows
+				checkIfActorHasMovies(newActor);
+				newActor = new ActorNode(name);
+				// add new actor
+				actors.put(newActor.getName(), newActor);
+				// check if the first movie is a TV show
+				if (checkTVShow(line)) {
+					continue;
+				}
+				final String firstMovie = getMovieAtLine(line);
+				newMovie = new MovieNode(firstMovie);
+				actors.get(newActor.getName()).addNeighbor(newMovie);
+				addMovies(newMovie, newActor);
+			} else {
+				// check if the first movie is a TV show
+				if (checkTVShow(line)) {
+					continue;
+				}
+				// if there is another movie, add it to the list, and add the neighbor
+				if (!line.isEmpty()) {
+					final String movie = getMovieAtLine(line);
+					newMovie = new MovieNode(movie);
+					addMovies(newMovie, newActor);
+					actors.get(newActor.getName()).addNeighbor(newMovie);
+				}
+			}
+		}
+		checkIfActorHasMovies(newActor);
+	}
 
-    /**
-     * If an actor does not have any movies (excluding TV movies), 
-     * he/she is not included in the graph
-     * @param a the actor node
-     */
-    private void checkIfActorHasMovies(ActorNode a) {
-        if (a == null) {
-            return;
-        }
-        if (a.getNeighbors().isEmpty()) {
-            actors.remove(a.getName());
-        }
-    }
-    
-    /**
-     * Adds specified movie to the specified actor
-     * @param movieNode the movie node
-     * @param actorNode the actor node
-     */
-    private void addMovies(MovieNode movieNode, ActorNode actorNode) {
-    	// if the movie is already in the list
-        if (movies.containsKey(movieNode.getName())) {
-            movies.get(movieNode.getName()).addNeighbor(actorNode);
-        } else {
-        	movieNode.addNeighbor(actorNode);
-            movies.put(movieNode.getName(), movieNode);
-        }
-    }
+	/**
+	 * Extracts the movie title from the given line
+	 * @param line The line of the data file
+	 * @return the movie title
+	 */
+	private static String getMovieAtLine(String line) {
+		if (line.contains("(V)")) {
+			return line.substring(line.lastIndexOf("\t") + 1, line.lastIndexOf(")") - 4);
+		} else {
+			return line.substring(line.lastIndexOf("\t") + 1, line.lastIndexOf(")") + 1);
+		}
+	}
 
-    /**
-     * Checks if the given line contains a TV show and not a movie
-     * @param line the line of the data file
-     * @return a boolean
-     */
-    private static boolean checkTVShow(String line) {
-        return (line.contains("(TV)") || line.contains("\""));
-    }
+	/**
+	 * If an actor does not have any movies (excluding TV movies), 
+	 * he/she is not included in the graph
+	 * @param a the actor node
+	 */
+	private void checkIfActorHasMovies(ActorNode a) {
+		if (a == null) {
+			return;
+		}
+		if (a.getNeighbors().isEmpty()) {
+			actors.remove(a.getName());
+		}
+	}
+
+	/**
+	 * Adds specified movie to the specified actor
+	 * @param movieNode the movie node
+	 * @param actorNode the actor node
+	 */
+	private void addMovies(MovieNode movieNode, ActorNode actorNode) {
+		// if the movie is already in the list
+		if (movies.containsKey(movieNode.getName())) {
+			movies.get(movieNode.getName()).addNeighbor(actorNode);
+		} else {
+			movieNode.addNeighbor(actorNode);
+			movies.put(movieNode.getName(), movieNode);
+		}
+	}
+
+	/**
+	 * Checks if the given line contains a TV show and not a movie
+	 * @param line the line of the data file
+	 * @return a boolean
+	 */
+	private static boolean checkTVShow(String line) {
+		return (line.contains("(TV)") || line.contains("\""));
+	}
 }
