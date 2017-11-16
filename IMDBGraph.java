@@ -4,16 +4,16 @@ import java.util.*;
 
 public class IMDBGraph {
 	
-	protected static class IMDBNode implements Node {
+    static class IMDBNode implements Node {
 
-        final protected String _name;
-        final protected Collection<IMDBNode> _neighbors;
+        final private String _name;
+        final private Collection<IMDBNode> _neighbors;
 
         /**
          * Constructor
          * @param name the name of the node
          */
-        public IMDBNode(String name) {
+        IMDBNode(String name) {
             _name = name;
             _neighbors = new ArrayList<>();
         }
@@ -22,7 +22,7 @@ public class IMDBGraph {
          * Adds n as a neighbor to the current node
          * @param n the node
          */
-        protected void addNeighbor(IMDBNode n) {
+        void addNeighbor(IMDBNode n) {
             _neighbors.add(n);
         }
 
@@ -50,34 +50,34 @@ public class IMDBGraph {
          */
         @Override
         public boolean equals(Object o) {
-    		return (((IMDBNode) o).getName().equals(_name));
+    		return (((Node) o).getName().equals(_name));
     	}
     }
 
-    final protected static class ActorNode extends IMDBNode {
+    final static class ActorNode extends IMDBNode {
 
         /**
          * Constructor
          * @param name the name of the actor
          */
-        public ActorNode(String name) {
+        ActorNode(String name) {
             super(name);
         }
     }
 
-    final protected static class MovieNode extends IMDBNode {
+    final static class MovieNode extends IMDBNode {
 
         /**
          * Constructor
          * @param name the name of the movie
          */
-        public MovieNode(String name) {
+        MovieNode(String name) {
             super(name);
         }
     }
 
     final protected Map<String, ActorNode> actors;
-    final protected Map<String, MovieNode> movies;
+    final Map<String, MovieNode> movies;
 
     /**
      * Constructor
@@ -121,10 +121,13 @@ public class IMDBGraph {
             // If new actor on this line
             if (line.indexOf(tab) != 0 && !line.isEmpty()) {
                 name = line.substring(0, line.indexOf(tab));
+                // check to see if the actor has only starred in TV shows
                 checkIfActorHasMovies(newActor);
                 newActor = new ActorNode(name);
+                // add new actor
                 actors.put(newActor.getName(), newActor);
-                if (line.contains("(TV)") || line.contains("\"")) {
+                // check if the first movie is a TV show
+                if (checkTVShow(line)) {
                     continue;
                 }
                 final String firstMovie = getMovieAtLine(line);
@@ -132,9 +135,11 @@ public class IMDBGraph {
                 actors.get(newActor.getName()).addNeighbor(newMovie);
                 addMovies(newMovie, newActor);
             } else {
-                if (line.contains("(TV)") || line.contains("\"")) {
+                // check if the first movie is a TV show
+                if (checkTVShow(line)) {
                     continue;
                 }
+                // if there is another movie, add it to the list, and add the neighbor
                 if (!line.isEmpty()) {
                     final String movie = getMovieAtLine(line);
                     newMovie = new MovieNode(movie);
@@ -152,7 +157,11 @@ public class IMDBGraph {
      * @return the movie title
      */
     private static String getMovieAtLine(String line) {
-        return line.substring(line.lastIndexOf("\t") + 1, line.lastIndexOf(")") + 1);
+        if (line.contains("(V)")) {
+            return line.substring(line.lastIndexOf("\t") + 1, line.lastIndexOf(")") - 4);
+        } else {
+            return line.substring(line.lastIndexOf("\t") + 1, line.lastIndexOf(")") + 1);
+        }
     }
 
     /**
@@ -182,5 +191,14 @@ public class IMDBGraph {
         	movieNode.addNeighbor(actorNode);
             movies.put(movieNode.getName(), movieNode);
         }
+    }
+
+    /**
+     * Checks if the given line contains a TV show and not a movie
+     * @param line the line of the data file
+     * @return a boolean
+     */
+    private static boolean checkTVShow(String line) {
+        return (line.contains("(TV)") || line.contains("\""));
     }
 }

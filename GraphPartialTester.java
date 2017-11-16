@@ -8,8 +8,8 @@ import java.io.*;
  * Code to test Project 3; you should definitely add more tests!
  */
 public class GraphPartialTester {
-	Graph actorsGraph, moviesGraph;
-	GraphSearchEngine searchEngine;
+	private Graph actorsGraph, moviesGraph;
+	private GraphSearchEngine searchEngine;
 
 	@Test(timeout=5000)
 	/**
@@ -87,6 +87,12 @@ public class GraphPartialTester {
 		correct.add(movie2);
 		System.out.println(correct);
 		System.out.println(shortestPath);
+
+		for (Node a : moviesGraph.getNodeByName("Movie4 (2002)").getNeighbors()) {
+			System.out.println(a.getName());
+		}
+
+
 		assertEquals(correct, shortestPath);
 	}
 	
